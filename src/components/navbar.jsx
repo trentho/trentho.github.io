@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const NavBar = () => {
-    const [showNav, setShowNav] = useState(false);
+    const [showNav, setShowNav] = useState(true); // Start with the navbar visible
+    const [lastScrollY, setLastScrollY] = useState(0); // Track the last scroll position
 
     const handleScroll = (sectionId) => {
         const element = document.querySelector(sectionId);
@@ -19,14 +19,18 @@ const NavBar = () => {
             });
         }
     };
-    
+
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 50) {
-                setShowNav(true);
+            // If scrolling down, hide the navbar. If scrolling up, show the navbar.
+            if (window.scrollY > lastScrollY) {
+                setShowNav(false); // Hide the navbar when scrolling down
             } else {
-                setShowNav(false);
+                setShowNav(true); // Show the navbar when scrolling up
             }
+
+            // Update the last scroll position to the current scroll position
+            setLastScrollY(window.scrollY);
         };
 
         window.addEventListener("scroll", handleScroll);
@@ -34,14 +38,14 @@ const NavBar = () => {
         return () => {
             window.removeEventListener("scroll", handleScroll);
         };
-    }, []);
+    }, [lastScrollY]); // Re-run the effect when the scroll position changes
 
     return (
         <div>
             {/* Navbar */}
             <nav
                 className={`z-50 fixed top-0 left-0 w-full bg-white shadow-md transition-transform duration-300 ${
-                    showNav ? "translate-y-0 backdrop-blur-xl bg-white/60" : "-translate-y-full"
+                    showNav ? "translate-y-0" : "-translate-y-full"
                 }`}
             >
                 <div className="flex flex-row justify-between p-4 text-[#354259]">
@@ -50,7 +54,7 @@ const NavBar = () => {
                             className="nav-item font-semibold hover:cursor-pointer"
                             onClick={() => handleScroll("#home")}
                         >
-                            sarah dickerson
+                            Trent Ho
                         </h1>
                     </div>
                     <div className="flex flex-row space-x-4">
@@ -58,13 +62,13 @@ const NavBar = () => {
                             className="nav-item hover:cursor-pointer"
                             onClick={() => handleScroll("#projects")}
                         >
-                            projects
+                            Projects
                         </h1>
                         <h1
                             className="nav-item hover:cursor-pointer"
                             onClick={() => handleScroll("#experience")}
                         >
-                            experience
+                            Experience
                         </h1>
                     </div>
                 </div>
