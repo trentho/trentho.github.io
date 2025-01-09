@@ -1,17 +1,21 @@
 // _app.js
 
-import '../styles/globals.css';  // Make sure your global CSS file is imported
-import 'tailwindcss/tailwind.css'; // Ensure Tailwind CSS is loaded
+import '../styles/globals.css';  
+import '@mantine/core/styles.css';
+import 'tailwindcss/tailwind.css';
 import 'animate.css';
+
 import Navbar from '../components/navbar'; // Import Navbar
+import { MantineProvider } from '@mantine/core';
+
 
 
 function MyApp({ Component, pageProps }) {
   return(
-  <div>
-    <Navbar/>
-    <Component {...pageProps} />
-  </div>
+    <MantineProvider>
+      <Navbar /> {/* Add the Navbar component here */}
+      <Component {...pageProps} />
+    </MantineProvider>
   );
 }
 
